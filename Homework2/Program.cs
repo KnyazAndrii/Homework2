@@ -6,250 +6,236 @@ namespace Homework2
     {
         static int ValidateTwoNumbers(int a, int b)
         {
+            int result = 0;
+
             if(a > b)
             {
-                return a + b;
+                result = a + b;
             }    
             else if(a == b)
             {
-                return a * b;
+                result = a* b;
             }
             else
             {
-                return a - b;
+                result = a - b;
             }
+
+            return result;
         }
 
         static int DetermineQuarter(int x, int y)
         {
+            int quarter = 0;
+
             if (x != 0 && y != 0)
             {
                 if (x > 0 && y > 0)
                 {
-                    return 1;
+                    quarter = 1;
                 }
                 else if (x < 0 && y > 0)
                 {
-                    return 2;
+                    quarter = 2;
                 }
                 else if (x < 0 && y < 0)
                 {
-                    return 3;
+                    quarter = 3;
                 }
                 else
                 {
-                    return 4;
+                    quarter = 4;
                 }
             }
-            else
-            {
-                return 0;
-            }
+
+            return quarter;
         }
 
-        static void SelectFromLowToHigh(int a, int b, int c)
+        static (int a, int b, int c) SelectFromLowToHigh(int a, int b, int c)
         {
-            if(a < b && a < c)
+            if(a > b)
             {
-                Console.Write(a + " ");
-
-                if(b < c)
-                {
-                    Console.Write(b + " ");
-                    Console.WriteLine(c);
-                }
-                else
-                {
-                    Console.Write(c + " ");
-                    Console.WriteLine(b);
-                }
+                Swap(ref a, ref b);
             }
-            else if(b < a && b < c)
+            else if(a > c)
             {
-                Console.Write(b + " ");
-                if(a < c)
-                {
-                    Console.Write(a + " ");
-                    Console.WriteLine(c);
-                }
-                else
-                {
-                    Console.Write(c + " ");
-                    Console.WriteLine(a);
-                }
+                Swap(ref a, ref c);
             }
-            else if (c < a && c < b)
+            else if (b > c)
             {
-                Console.Write(c + " ");
-                if (b < a)
-                {
-                    Console.Write(b + " ");
-                    Console.WriteLine(a);
-                }
-                else
-                {
-                    Console.Write(a + " ");
-                    Console.WriteLine(b);
-                }
+                Swap(ref b, ref c);
             }
+            return (a, b, c);
         }
 
-        static void CalculateQuadraticEquation(double a, double b, double c)
+        static void Swap(ref int a, ref int b)
+        {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+
+        static (double x1, double x2) CalculateQuadraticEquation(double a, double b, double c)
         {
             double x1 = 0;
             double x2 = 0;
-            double Crimeans = b * b - 4 * a * c;
+            double SqrtD = Math.Sqrt(b * b - 4 * a * c);
 
-            if(Crimeans > 0)
+            if (SqrtD > 0)
             {
-                x1 = (-b + Math.Sqrt(Crimeans)) / (2 * a);
-                x2 = (-b - Math.Sqrt(Crimeans)) / (2 * a);
+                x1 = (-b + SqrtD) / (2 * a);
+                x2 = (-b - SqrtD) / (2 * a);
 
-                Console.WriteLine("x1 = " + x1 + "; x2 = " + x2);
             }
-            else if(Crimeans == 0)
+            else if (SqrtD == 0)
             {
                 x1 = -b / (2 * a);
-                Console.WriteLine("The roots are equal; x1 = x2 = " + x1);
+                x2 = x1;
             }
             else
             {
-                Console.WriteLine("There are no roots of equation");
+                x1 = double.NaN;
+                x2 = double.NaN;
             }
+
+            return (x1, x2);
         }
 
-        static void CapitalizateNumbers(int num)
+        static string CapitalizateNumbers(int num)
         {
-            string ten = "ten";
-            string twenty = "twenty";
-            string eleven = "eleven";
-            string twelve = "twelve";  
-            string thirt = "thirt";
-            string fift = "fift";
-            string one = "one";
-            string two = "two";
-            string three = "three";
-            string four = "four";
-            string five = "five";
-            string six = "six";
-            string seven = "seven";
-            string eight = "eight";
-            string nine = "nine";
+            string firstWord = string.Empty;
+            string secondWord = string.Empty;
+
             int firstDigit = num / 10;
             int secondDigit = num % 10;
 
-            if (num == 10)
+            if (firstDigit != 1)
             {
-                Console.WriteLine(ten);
+                firstWord = GetDozens(firstDigit);
+                secondWord = GetUnits(secondDigit);
+
+                return $"{firstWord}-{secondWord}";
             }
-            else if (num == 11)
+            else
             {
-                Console.WriteLine(eleven);
+                firstWord = GetFormTenToNineteen(secondDigit);
+
+                return firstWord;
             }
-            else if (num == 12)
+        }
+
+        private static string GetDozens(int firstDigit)
+        {
+            string result = string.Empty;
+            switch (firstDigit)
             {
-                Console.WriteLine(twelve);
+                case 2:
+                    result = "twenty";
+                    break;
+                case 3:
+                    result = "thirty";
+                    break;
+                case 4:
+                    result = "forty";
+                    break;
+                case 5:
+                    result = "fifty";
+                    break;
+                case 6:
+                    result = "sixty";
+                    break;
+                case 7:
+                    result = "seventy";
+                    break;
+                case 8:
+                    result = "eighty";
+                    break;
+                case 9:
+                    result = "ninety";
+                    break;
             }
-            else if (num == 13)
+            return result;
+        }
+
+        private static string GetUnits(int secondDigit)
+        {
+            string result = string.Empty;
+            switch (secondDigit)
             {
-                Console.WriteLine(thirt + "een");
+                case 1:
+                    result = "one";
+                    break;
+                case 2:
+                    result = "two";
+                    break;
+                case 3:
+                    result = "three";
+                    break;
+                case 4:
+                    result = "four";
+                    break;
+                case 5:
+                    result = "five";
+                    break;
+                case 6:
+                    result = "six";
+                    break;
+                case 7:
+                    result = "seven";
+                    break;
+                case 8:
+                    result = "eight";
+                    break;
+                case 9:
+                    result = "nine";
+                    break;
             }
-            else if (num == 14)
+            return result;
+        }
+
+        private static string GetFormTenToNineteen(int secondDigit)
+        {
+            string result = string.Empty;
+            switch (secondDigit)
             {
-                Console.WriteLine(four + "teen");
+                case 1:
+                    result = "eleven";
+                    break;
+                case 2:
+                    result = "twelve";
+                    break;
+                case 3:
+                    result = "thirteen";
+                    break;
+                case 4:
+                    result = "fourteen";
+                    break;
+                case 5:
+                    result = "fifteen";
+                    break;
+                case 6:
+                    result = "sixteen";
+                    break;
+                case 7:
+                    result = "seventeen";
+                    break;
+                case 8:
+                    result = "eighteen";
+                    break;
+                case 9:
+                    result = "nineteen";
+                    break;
             }
-            else if (num == 15)
-            {
-                Console.WriteLine(fift + "een");
-            }
-            else if (num == 16)
-            {
-                Console.WriteLine(six + "teen");
-            }
-            else if (num == 17)
-            {
-                Console.WriteLine(seven + "teen");
-            }
-            else if (num == 18)
-            {
-                Console.WriteLine(eight + "een");
-            }
-            else if (num == 19)
-            {
-                Console.WriteLine(nine + "teen");
-            }
-            else if (num >= 20 && num <= 99)
-            {
-                switch (firstDigit)
-                {
-                    case 2:
-                        Console.Write(twenty);
-                        break;
-                    case 3:
-                        Console.Write(thirt + "y");
-                        break;
-                    case 4:
-                        Console.Write(four + "ty");
-                        break;
-                    case 5:
-                        Console.Write(fift + "y");
-                        break;
-                    case 6:
-                        Console.Write(six + "ty");
-                        break;
-                    case 7:
-                        Console.Write(seven + "ty");
-                        break;
-                    case 8:
-                        Console.Write(eight + "y");
-                        break;
-                    case 9:
-                        Console.Write(nine + "ty");
-                        break;
-                }
-                switch (secondDigit)
-                {
-                    case 1:
-                        Console.Write("-" + one);
-                        break;
-                    case 2:
-                        Console.Write("-" + two);
-                        break;
-                    case 3:
-                        Console.Write("-" + three);
-                        break;
-                    case 4:
-                        Console.Write("-" + four);
-                        break;
-                    case 5:
-                        Console.Write("-" + five);
-                        break;
-                    case 6:
-                        Console.Write("-" + six);
-                        break;
-                    case 7:
-                        Console.Write("-" + seven);
-                        break;
-                    case 8:
-                        Console.Write("-" + eight);
-                        break;
-                    case 9:
-                        Console.Write("-" + nine);
-                        break;
-                }
-            }        
+            return result;
         }
 
         static void Main(string[] args)
         {
             Console.WriteLine("Task 1: " + ValidateTwoNumbers(5, 6));
             Console.WriteLine("Task 2: " + DetermineQuarter(3, -6) + "-th quarter");
-            Console.Write("Task 3: ");
-            SelectFromLowToHigh(5, 12, 99);
-            Console.Write("Task 4: ");
-            CalculateQuadraticEquation(2, 5, 2);
-            Console.Write("Task 5: ");
-            CapitalizateNumbers(98);
+            Console.WriteLine("Task 3: " + SelectFromLowToHigh(5, 12, 99));
+            Console.WriteLine("Task 4: " + CalculateQuadraticEquation(2, 5, 2));
+            Console.Write("Task 5: " + CapitalizateNumbers(58));
         }
     }
 }
